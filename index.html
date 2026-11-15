@@ -92,7 +92,7 @@ footer{text-align:center;color:var(--mu);padding:40px 0 60px}
 /* ===== v2 glow-up ===== */
 body{background:#07051a}
 .b1{background:#7c3aed;opacity:.55}.b2{background:#0ea5e9;opacity:.4}
-#cv{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3}
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
 #spot{position:fixed;left:-300px;top:-300px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,209,102,.16),transparent 65%);pointer-events:none;z-index:1}
 #nav{top:12px;margin:12px auto 0;width:max-content;max-width:94vw;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(20,14,56,.6);backdrop-filter:blur(16px);gap:6px 22px;box-shadow:0 10px 40px -10px #000}
 #pg{background:linear-gradient(90deg,#ffd166,#ff6b9d,#4cc9f0);box-shadow:0 0 16px #ff6b9d}
@@ -289,10 +289,10 @@ S.push(['First, what is a logarithm?','IDF uses a logarithm, so let us meet it f
  const T=(x,y,z,t,c,d)=>`<text x="${x}" y="${y}" font-size="${z}" fill="${c}" text-anchor="middle" font-family="Bricolage Grotesque,sans-serif" font-weight="800" style="animation-delay:${d}s">${t}</text>`;
  const A=(x,a,b,c,d)=>{const k=b>a?1:-1;return `<g style="animation-delay:${d}s"><line x1="${x}" y1="${a}" x2="${x}" y2="${b-k*10}" stroke="${c}" stroke-width="3" stroke-dasharray="5 5"/><polygon points="${x-8},${b-k*13} ${x+8},${b-k*13} ${x},${b}" fill="${c}"/></g>`};
  w.innerHTML=`<svg viewBox="0 0 720 330" class="svg lg">${T(105,175,90,'log','#fff',0)}${T(200,208,48,'10','#ffd166',.6)}${T(245,175,90,'(','#fff',0)}${T(340,175,90,'100','#4cc9f0',1.2)}${T(435,175,90,')','#fff',0)}${T(505,175,90,'=','#fff',0)}${T(595,175,90,'2','#80ed99',1.8)}
- ${T(105,40,19,'Logarithm: the question','#fff',.3)}${A(105,52,98,'#fff',.3)}
+ ${T(105,24,19,'Logarithm','#fff',.3)}${T(105,46,15,'the question','#fff',.3)}${A(105,62,98,'#fff',.3)}
  ${T(200,312,24,'BASE','#ffd166',.9)}${A(200,284,224,'#ffd166',.9)}
- ${T(340,40,19,'Argument: the number we ask about','#4cc9f0',1.5)}${A(340,52,92,'#4cc9f0',1.5)}
- ${T(595,312,19,'Answer = the exponent','#80ed99',2.1)}${A(595,284,192,'#80ed99',2.1)}</svg>
+ ${T(340,24,19,'Argument','#4cc9f0',1.5)}${T(340,46,15,'the number we ask about','#4cc9f0',1.5)}${A(340,62,92,'#4cc9f0',1.5)}
+ ${T(595,298,19,'Answer','#80ed99',2.1)}${T(595,320,15,'= the exponent','#80ed99',2.1)}${A(595,270,192,'#80ed99',2.1)}</svg>
  <div class="say2">Read it out loud: <b>“10 to the power of what gives 100?”</b> The answer is 2, because 10 × 10 = 100.</div>
  <h3>Inverse of exponentiation</h3><div class="ctl"><label>Exponent k = <b id="kv"></b></label><input type="range" id="k" min="0" max="3" value="2"></div>
  <div class="two"><div class="card"><small class="hint">EXPONENTIATION</small><div class="eq" id="e1"></div></div><div class="card"><small class="hint">LOGARITHM, THE INVERSE</small><div class="eq" id="e2"></div></div></div>
@@ -352,11 +352,13 @@ else secs.forEach(s=>s.classList.add('in'));
 secs[0].classList.add('in');
 addEventListener('scroll',()=>{const h=document.documentElement;$('#pg').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100+'%'},{passive:true});
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
- const cv=el('canvas');cv.id='cv';document.body.prepend(cv);const x=cv.getContext('2d');let W,H,n,d;
- const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;n=Math.ceil(W/30);d=Array.from({length:n},()=>Math.random()*H/30)};rs();addEventListener('resize',rs);
- const g=['0','1','0','1','0','1','the','tf','idf','log','bag'];
- setInterval(()=>{x.fillStyle='rgba(7,5,26,.12)';x.fillRect(0,0,W,H);x.font='16px Consolas,monospace';
-  d.forEach((y,i)=>{x.fillStyle=i%3?'#4cc9f0':'#ffd166';x.fillText(g[Math.random()*g.length|0],i*30,y*30);d[i]=y*30>H&&Math.random()>.97?0:y+.5})},70);
+ const cv=el('canvas');cv.id='cv';document.body.prepend(cv);const x=cv.getContext('2d');let W,H,P=[];
+ const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;P=Array.from({length:Math.round(W*H/22000)},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:1+Math.random()*1.8,c:['#ffd166','#4cc9f0','#ff6b9d','#fff'][Math.random()*4|0]}))};rs();addEventListener('resize',rs);
+ (function d(){x.clearRect(0,0,W,H);
+  P.forEach((a,i)=>{a.x=(a.x+a.vx+W)%W;a.y=(a.y+a.vy+H)%H;
+   for(let j=i+1;j<P.length;j++){const b=P[j],dx=a.x-b.x,dy=a.y-b.y,q=dx*dx+dy*dy;if(q<17000){x.strokeStyle=`rgba(180,170,255,${.22*(1-q/17000)})`;x.lineWidth=1;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}}
+   x.fillStyle=a.c;x.globalAlpha=.8;x.shadowColor=a.c;x.shadowBlur=10;x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill();x.globalAlpha=1;x.shadowBlur=0});
+  requestAnimationFrame(d)})();
  const sp=el('div');sp.id='spot';document.body.append(sp);
  addEventListener('pointermove',e=>{sp.style.transform=`translate(${e.clientX}px,${e.clientY}px)`},{passive:true});
 }
