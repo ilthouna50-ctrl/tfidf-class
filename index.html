@@ -88,14 +88,52 @@ td.z{color:rgba(255,255,255,.3);font-weight:400}td.nz{color:var(--ink)}td.new{an
 .pop{animation:pop .45s}@keyframes pop{40%{transform:scale(1.35)}}
 footer{text-align:center;color:var(--mu);padding:40px 0 60px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ===== v2 glow-up ===== */
+body{background:#07051a}
+.b1{background:#7c3aed;opacity:.55}.b2{background:#0ea5e9;opacity:.4}
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3}
+#spot{position:fixed;left:-300px;top:-300px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,209,102,.16),transparent 65%);pointer-events:none;z-index:1}
+#nav{top:12px;margin:12px auto 0;width:max-content;max-width:94vw;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(20,14,56,.6);backdrop-filter:blur(16px);gap:6px 22px;box-shadow:0 10px 40px -10px #000}
+#pg{background:linear-gradient(90deg,#ffd166,#ff6b9d,#4cc9f0);box-shadow:0 0 16px #ff6b9d}
+h2{background:linear-gradient(100deg,#fff 10%,#ffd166 40%,#ff6b9d 70%,#4cc9f0);background-size:240% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 9s linear infinite}
+@keyframes sh{to{background-position:240% center}}
+h3{font:800 24px "Bricolage Grotesque",sans-serif;margin:22px 0 8px;color:var(--sky)}
+main{counter-reset:sec}
+.s:not(#s0)>h2::before{counter-increment:sec;content:"SECTION " counter(sec,decimal-leading-zero);display:block;font:700 14px "Atkinson Hyperlegible";letter-spacing:.35em;margin-bottom:10px;-webkit-text-fill-color:var(--sky)}
+.w{background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:clamp(18px,3vw,38px);backdrop-filter:blur(12px);box-shadow:0 40px 90px -35px #000,inset 0 1px 0 rgba(255,255,255,.25)}
+#s0 .w{background:none;border:0;box-shadow:none;backdrop-filter:none;padding:0}
+button:not(.ghost):not(.pk):not(.rv){background:linear-gradient(135deg,#ffd166,#ff9f6b);border:0;box-shadow:0 8px 22px -8px #ff9f6b;transition:transform .2s,box-shadow .2s}
+button:hover{transform:translateY(-2px) scale(1.04)}
+button.ghost,.pk{border-color:rgba(255,209,102,.6)}
+.card,.say2{border-radius:20px;backdrop-filter:blur(6px)}
+.tok{box-shadow:0 4px 16px -4px var(--c)}
+.slot{box-shadow:0 10px 30px -10px #ffd166}
+.morph{display:flex;gap:20px;flex-wrap:wrap;margin:34px 0 10px}
+.mc{position:relative;min-width:130px;height:130px;flex:1;max-width:190px;border-radius:26px;border:2px solid var(--c);display:grid;place-items:center;background:rgba(255,255,255,.06);box-shadow:0 0 44px -8px var(--c),inset 0 0 30px -12px var(--c);animation:fl 4s ease-in-out infinite;animation-delay:var(--d)}
+.mc span{position:absolute;font:800 28px "Bricolage Grotesque",sans-serif;animation:fw 5s infinite;animation-delay:var(--d)}
+.mc .mn{font-size:72px;color:var(--c);animation-name:fn}
+@keyframes fl{50%{transform:translateY(-14px)}}
+@keyframes fw{0%,38%{opacity:1}50%,88%{opacity:0;transform:scale(.6)}100%{opacity:1}}
+@keyframes fn{0%,38%{opacity:0;transform:scale(.5)}50%,88%{opacity:1;transform:none}100%{opacity:0}}
+.lg text,.lg g{opacity:0;animation:fi .7s forwards}@keyframes fi{to{opacity:1}}
+.rv{background:#6b6790;color:#6b6790;border:0;min-width:84px;font:inherit;font-weight:800;border-radius:12px;margin:0 0 0 8px;box-shadow:none}
+.rv.on{background:var(--mint);color:var(--ink)}
+#s16{text-align:center;padding-bottom:90px}
+#s16 h2{font-size:clamp(52px,12vw,160px)}#s16 .ex{margin:0 auto 26px}
+.ty{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
+.tyc{flex:1 1 300px;padding:34px 20px;border-radius:26px;border:2px solid var(--gold);background:rgba(255,209,102,.08);box-shadow:0 0 60px -14px var(--gold)}
+.tyc span{display:block;letter-spacing:.35em;color:var(--sky);font-weight:700;margin-bottom:8px}
+.tyc b{font:800 clamp(28px,5vw,52px) "Bricolage Grotesque",sans-serif;color:#fff}
+@media(prefers-reduced-motion:reduce){.mc .mn{display:none}.lg text,.lg g{opacity:1}}
 </style>
 </head>
 <body>
 <div class="bl b1"></div><div class="bl b2"></div>
 <div id="pg"></div>
-<nav id="nav"><b>Words → Numbers</b><a href="#s1">Bag of Words</a><a href="#s2">Try a sentence</a><a href="#s4">Steps</a><a href="#s7">TF-IDF</a><a href="#s14">Practice</a></nav>
+<nav id="nav"><b>Words → Numbers</b><a href="#s1">Bag of Words</a><a href="#s2">Lab</a><a href="#s4">Steps</a><a href="#s9">TF-IDF</a><a href="#s12">Logs</a><a href="#s15">Practice</a></nav>
 <main id="main"></main>
-<footer>Scroll back up any time. Every section is interactive.</footer>
+<footer>Words → Numbers · Bag of Words and TF-IDF</footer>
 
 <script>
 (()=>{
@@ -103,7 +141,7 @@ const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelecto
 const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
 const f=x=>String(Math.round(x*1000)/1000),DC=['#ffb703','#4cc9f0','#ff6b9d'];
 const RAW=["Aman and Avni are stressed","Aman went to a therapist","Avni went to download a health chatbot"];
-const tok=s=>s.toLowerCase().match(/[a-z0-9']+/g)||[];
+const tok=s=>s.toLowerCase().match(/[a-z0-9]+/g)||[];
 let CT=[],sel=0,dt=0;
 const later=(fn,ms)=>CT.push(setTimeout(fn,ms)),every=(fn,ms,arr=CT)=>{const id=setInterval(fn,ms);arr.push(id);return id};
 const ord=n=>n+((n%100>10&&n%100<14)||n%10>3||n%10===0?'th':['th','st','nd','rd'][n%10]);
@@ -122,10 +160,11 @@ function fly(a,b,spd){return new Promise(res=>{
  c.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${dx*.5}px,${dy*.5-70}px) scale(1.3)`,offset:.5},{transform:`translate(${dx}px,${dy}px) scale(.7)`,opacity:.3}],{duration:700/spd,easing:'ease-in-out',fill:'forwards'}).onfinish=()=>{c.remove();res()}})}
 function player(w,total,draw,ms){
  const mine=CT;
- w.insertAdjacentHTML('beforeend',`<div class="ctl"><button id="pl">▶ Play</button><input type="range" id="sl" min="0" max="${total}" value="0" aria-label="Step"><span id="cp"></span></div>`);
- let p=0,id=0;const stop=()=>{clearInterval(id);id=0;$('#pl',w).textContent='▶ Play'};
- const set=v=>{p=v;$('#sl',w).value=p;draw(p)};
- $('#pl',w).onclick=()=>{if(id){stop();return}if(p>=total)set(0);$('#pl',w).textContent='⏸ Pause';id=every(()=>{set(p+1);if(p>=total)stop()},ms,mine)};
+ w.insertAdjacentHTML('beforeend',`<div class="ctl"><button id="pl">▶ Play</button><input type="range" id="sl" min="0" max="${total}" value="0" aria-label="Step"><span id="cp"></span></div><div class="ctl"><label style="color:var(--mu)">🐢 Speed <input type="range" id="sp" min="0.25" max="3" step="0.25" value="1" style="width:160px"> 🐇 <b id="spv">1×</b></label></div>`);
+ let p=0,id=0;const sp=()=>+$('#sp',w).value,stop=()=>{clearInterval(id);id=0;$('#pl',w).textContent='▶ Play'};
+ const set=v=>{p=v;$('#sl',w).value=p;draw(p)},start=()=>{clearInterval(id);id=every(()=>{set(p+1);if(p>=total)stop()},ms/sp(),mine)};
+ $('#pl',w).onclick=()=>{if(id){stop();return}if(p>=total)set(0);$('#pl',w).textContent='⏸ Pause';start()};
+ $('#sp',w).oninput=()=>{$('#spv',w).textContent=sp()+'×';if(id)start()};
  $('#sl',w).oninput=e=>{stop();set(+e.target.value)};set(0);
 }
 function picker(w,V,fn,badge){
@@ -136,15 +175,14 @@ function picker(w,V,fn,badge){
 
 const S=[];
 /* 0 hero */
-S.push(['Words → Numbers','Computers can’t read. They only understand numbers. Bag of Words and TF-IDF are two ways to turn text into numbers. Tap a card to flip it, then scroll down.',w=>{
+S.push(['Words → Numbers','Computers cannot read. They only understand numbers. Bag of Words and TF-IDF are two ways to turn text into numbers. Watch the words below turn into numbers, then scroll down.',w=>{
  const ws=['aman','went','to','a','therapist'];
- w.innerHTML=`<div class="flips">${ws.map((x,i)=>`<div class="flip"><div class="in"><b>${x}</b><i>${i+1}</i></div></div>`).join('')}</div>`;
- $$('.flip',w).forEach((c,i)=>{c.onclick=()=>c.classList.toggle('on');later(()=>c.classList.add('on'),700+i*350)});
+ w.innerHTML=`<div class="morph">${ws.map((x,i)=>`<div class="mc" style="--c:${DC[i%3]};--d:${i*.3}s"><span class="mw">${x}</span><span class="mn">${i+1}</span></div>`).join('')}</div><p class="hint">Scroll down ↓</p>`;
 }]);
 /* 1 BoW */
-const REV="I love this movie! It's sweet, but with satirical humor. The dialogue is great and the adventure scenes are fun... It manages to be whimsical and romantic while laughing at the conventions of the fairy tale genre. I would recommend it to just about anyone. I've seen it several times, and I'm always happy to see it again whenever I have a friend who hasn't seen it yet!";
+const REV="I love this movie! It is sweet, but with satirical humor. The dialogue is great and the adventure scenes are fun. It manages to be whimsical and romantic while laughing at the conventions of the fairy tale genre. I would recommend it to just about anyone. I have seen it several times, and I am always happy to see it again whenever I have a friend who has not seen it yet! The actors are wonderful and the music is catchy. The story moves fast, and the jokes land every time. My family watches it together every year, and we laugh at the same scenes every time. If you want a movie that is funny, warm and full of heart, this is the movie to watch. I think it is a great movie for children and for adults, and I will happily watch it again and again.";
 S.push(['What is Bag of Words?','Bag of Words is an NLP method that converts text into numbers by counting how often each word appears in a corpus. It extracts features from text so machine learning algorithms can use it. Tap any word to find all its copies, then shake the bag: the order is lost, only the counts matter.',w=>{
- const ws=REV.toLowerCase().replace(/['’]/g,' ').match(/[a-z]+/g),cnt={};ws.forEach(x=>cnt[x]=(cnt[x]||0)+1);
+ const ws=REV.toLowerCase().match(/[a-z]+/g),cnt={};ws.forEach(x=>cnt[x]=(cnt[x]||0)+1);
  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,10);
  w.innerHTML=`<div class="two"><div><div class="para" id="para"></div><button id="shk">🎒 Shake the bag</button></div><div>${bars(top.map(([k,n])=>[k,n,top[0][1]]))}</div></div>`;
  let sh=false,hi='';
@@ -180,16 +218,17 @@ S.push(['Bag of Words lab: type your own sentence','Type any sentence and press 
 /* 3 workflow */
 S.push(['The Bag of Words workflow','Four stages turn raw text into vectors. Click a stage, or watch the data travel through them.',w=>{
  const st=[['Text Processing','Collect data and pre-process it.','#4cc9f0'],['Create a Dictionary','List all unique words in the corpus.','#ffb703'],['Create Document Vectors','Count word occurrences in each document.','#ff6b9d'],['Create Vectors for All Documents','Apply the process to all documents.','#80ed99']];
- w.innerHTML=`<div class="flow">${st.map((s,i)=>`<div class="node" data-i="${i}" style="--c:${s[2]}"><b>${i+1}</b>${s[0]}</div>${i<3?'<div class="arr"><i></i></div>':''}`).join('')}</div><div class="say2" id="dsc"></div>`;
+ w.innerHTML=`<div class="flow">${st.map((s,i)=>`<div class="node" data-i="${i}" style="--c:${s[2]}"><b>${i+1}</b>${s[0]}</div>${i<3?'<div class="arr"><i></i></div>':''}`).join('')}</div><div class="say2" id="dsc"></div><div class="ctl"><label style="color:var(--mu)">🐢 Speed <input type="range" id="sp" min="0.25" max="3" step="0.25" value="1" style="width:160px"> 🐇 <b id="spv">1×</b></label></div>`;
  let k=0;const go=i=>{k=i;$$('.node',w).forEach((n,j)=>n.classList.toggle('on',j===i));$$('.arr',w).forEach((a,j)=>a.classList.toggle('on',j<i));$('#dsc',w).innerHTML=`<b style="color:${st[i][2]}">${st[i][0]}</b>: ${st[i][1]}`};
- const id=every(()=>go((k+1)%4),2300);
- w.onclick=e=>{const n=e.target.closest('.node');if(n){clearInterval(id);go(+n.dataset.i)}};go(0);
+ let id=0;const sp=()=>+$('#sp',w).value,start=()=>{clearInterval(id);id=every(()=>go((k+1)%4),2300/sp())};
+ w.oninput=e=>{if(e.target.id==='sp'){$('#spv',w).textContent=sp()+'×';if(id)start()}};
+ w.onclick=e=>{const n=e.target.closest('.node');if(n){clearInterval(id);id=0;go(+n.dataset.i)}};go(0);start();
 }]);
 /* 4 normalize */
 S.push(['Step 1: Collect and normalize','Start with three simple documents. Text normalization lowercases the text and removes punctuation, so each document becomes a list of words. Edit these sentences: the textbook-style sections below (steps 2 to 4 and TF-IDF) all use them.',w=>{
  w.innerHTML=RAW.map((r,i)=>`<div class="row" style="--c:${DC[i]}"><b>Doc ${i+1}</b><div><input value="${r}" data-i="${i}" aria-label="Document ${i+1}"><div style="margin-top:6px" id="n${i}"></div></div></div>`).join('');
  const up=()=>RAW.forEach((r,i)=>{$('#n'+i,w).innerHTML='['+toks(tok(r),i)+']'});
- w.oninput=e=>{if(e.target.dataset.i!=null){RAW[+e.target.dataset.i]=e.target.value;up();clearTimeout(dt);dt=setTimeout(()=>[5,6,10,11,13].forEach(bw),400)}};up();
+ w.oninput=e=>{if(e.target.dataset.i!=null){RAW[+e.target.dataset.i]=e.target.value;up();clearTimeout(dt);dt=setTimeout(()=>[5,6,10,11,14].forEach(bw),400)}};up();
 }]);
 /* 5 dictionary */
 S.push(['Step 2: Create the dictionary','List every unique word from all documents. A word that appears many times is listed only once. Press Play: the first time a word appears it glows with “1st” and drops into the bag. Repeats are skipped.',w=>{
@@ -245,6 +284,23 @@ S.push(['DF: Document Frequency','Document Frequency is the number of documents 
  const {D,V,tf,df,N}=C();
  picker(w,V,(j,o)=>{o.innerHTML=`<div class="docs3">${D.map((d,i)=>`<div class="dc ${tf[i][j]?'on':''}" style="--c:${DC[i]}"><b style="color:${DC[i]}">Doc ${i+1}</b><div>${d.map(x=>x===V[j]?`<span class="hl2">${x}</span>`:x).join(' ')}</div><div>${tf[i][j]?`✔ contains it${tf[i][j]>1?` (${tf[i][j]} times, still counts once)`:''}`:'✘ does not contain it'}</div></div>`).join('')}</div><div class="big">DF = ${df[j]} of ${N} documents</div>`},j=>df[j]);
 }]);
+/* 12 LOG */
+S.push(['First, what is a logarithm?','IDF uses a logarithm, so let us meet it first. A logarithm asks one question: what power must I raise the base to, to get this number? It is the inverse (the undo button) of exponentiation.',w=>{
+ const T=(x,y,z,t,c,d)=>`<text x="${x}" y="${y}" font-size="${z}" fill="${c}" text-anchor="middle" font-family="Bricolage Grotesque,sans-serif" font-weight="800" style="animation-delay:${d}s">${t}</text>`;
+ const A=(x,a,b,c,d)=>{const k=b>a?1:-1;return `<g style="animation-delay:${d}s"><line x1="${x}" y1="${a}" x2="${x}" y2="${b-k*10}" stroke="${c}" stroke-width="3" stroke-dasharray="5 5"/><polygon points="${x-8},${b-k*13} ${x+8},${b-k*13} ${x},${b}" fill="${c}"/></g>`};
+ w.innerHTML=`<svg viewBox="0 0 720 330" class="svg lg">${T(105,175,90,'log','#fff',0)}${T(200,208,48,'10','#ffd166',.6)}${T(245,175,90,'(','#fff',0)}${T(340,175,90,'100','#4cc9f0',1.2)}${T(435,175,90,')','#fff',0)}${T(505,175,90,'=','#fff',0)}${T(595,175,90,'2','#80ed99',1.8)}
+ ${T(105,40,19,'Logarithm: the question','#fff',.3)}${A(105,52,98,'#fff',.3)}
+ ${T(200,312,24,'BASE','#ffd166',.9)}${A(200,284,224,'#ffd166',.9)}
+ ${T(340,40,19,'Argument: the number we ask about','#4cc9f0',1.5)}${A(340,52,92,'#4cc9f0',1.5)}
+ ${T(595,312,19,'Answer = the exponent','#80ed99',2.1)}${A(595,284,192,'#80ed99',2.1)}</svg>
+ <div class="say2">Read it out loud: <b>“10 to the power of what gives 100?”</b> The answer is 2, because 10 × 10 = 100.</div>
+ <h3>Inverse of exponentiation</h3><div class="ctl"><label>Exponent k = <b id="kv"></b></label><input type="range" id="k" min="0" max="3" value="2"></div>
+ <div class="two"><div class="card"><small class="hint">EXPONENTIATION</small><div class="eq" id="e1"></div></div><div class="card"><small class="hint">LOGARITHM, THE INVERSE</small><div class="eq" id="e2"></div></div></div>
+ <h3>Quick check: click the grey box to reveal</h3><div id="qz">${[[100,2],[10,1],[1000,3]].map(q=>`<div class="eq">log₁₀(${q[0]}) = <button class="rv">${q[1]}</button></div>`).join('')}</div>
+ <p class="hint">Why use a log in IDF? It squashes big ratios into small, easy numbers: 100 becomes 2.</p>`;
+ const up=()=>{const k=+$('#k',w).value;$('#kv',w).textContent=k;$('#e1',w).innerHTML=`10<sup>${k}</sup> = <b>${10**k}</b>`;$('#e2',w).innerHTML=`log₁₀(${10**k}) = <b>${k}</b>`};
+ w.oninput=up;w.onclick=e=>{const b=e.target.closest('.rv');if(b)b.classList.toggle('on')};up();
+}]);
 /* 12 IDF */
 S.push(['IDF: Inverse Document Frequency','Put the total number of documents on top and the document frequency below, then take log₁₀. The more documents contain a word, the lower its IDF. A word in every document scores 0. Drag the sliders or try the examples.',w=>{
  w.innerHTML=`<div class="pre"><button class="ghost" data-n="10" data-d="10">“and”: in 10 of 10</button><button class="ghost" data-n="10" data-d="3">“pollution”: in 3 of 10</button><button class="ghost" data-n="3" data-d="2">“aman”: in 2 of 3</button></div><div class="two"><div><label>Total documents N = <b id="nv"></b></label><input type="range" id="N" min="1" max="20"><label>Documents containing the word (DF) = <b id="dv"></b></label><input type="range" id="D" min="1" max="20"></div><div class="sq" id="sq"></div></div><div class="eq" id="eq"></div><div class="meter"><i id="mt"></i></div><p class="hint" id="mh"></p>`;
@@ -270,13 +326,18 @@ S.push(['TF-IDF: the final scores','Multiply each word’s TF by its IDF. Words 
  draw();
 }]);
 /* 14 try it */
-S.push(['Try it yourself','Scenario 1: there are 5 documents and “finance” appears in 3 of them. Scenario 2: there are 4 documents and “leverage” appears in 2 of them. Work out each IDF with the log button on a calculator (base 10), then check. Assume TF = 1 for the final TF-IDF.',w=>{
- const Q=[['finance',5,3],['leverage',4,2]];
+S.push(['Try it yourself','Three easy ones. In each scenario the number inside the log bracket works out to 1, 10 or 100, so you can do it in your head. Divide N by DF first, then use what you learned about logs. Assume TF = 1 for the final TF-IDF.',w=>{
+ const Q=[['finance',5,5],['leverage',20,2],['pollution',300,3]];
  w.innerHTML=Q.map((q,i)=>`<div class="card"><h3 style="margin:0 0 6px">Scenario ${i+1}: “${q[0]}”</h3><p style="margin:0 0 8px">N = ${q[1]}, DF = ${q[2]}. IDF = log₁₀(${q[1]}/${q[2]}) = ?</p><div style="display:flex;gap:10px;max-width:520px"><input type="number" step="0.001" id="a${i}" aria-label="Answer ${i+1}"><button data-c="${i}">Check</button><button class="ghost" data-s="${i}">Steps</button></div><div class="fb" id="fb${i}"></div></div>`).join('');
  w.onclick=e=>{const c=e.target.closest('[data-c]'),s=e.target.closest('[data-s]');if(!c&&!s)return;const i=+(c?c.dataset.c:s.dataset.s);
   const [k,n,d]=Q[i],ans=Math.log10(n/d),fb=$('#fb'+i,w);
   if(s){fb.innerHTML=`Divide: ${n} ÷ ${d} = ${f(n/d)}. Take log₁₀: <b>${f(ans)}</b>. With TF = 1, TF-IDF = 1 × ${f(ans)} = <b>${f(ans)}</b>.`;return}
   const v=parseFloat($('#a'+i,w).value);fb.innerHTML=isNaN(v)?'Type your answer first.':Math.abs(v-ans)<.005?'✔ Correct! Well done.':'✘ Not quite. Divide N by DF first, then press the log button.'};
+}]);
+
+/* 16 thanks */
+S.push(['THANK YOU','Questions? Ask away.',w=>{
+ w.innerHTML='<div class="ty"><div class="tyc"><span>NAME:</span><b>IDEN L. THOUNA</b></div><div class="tyc"><span>CLASS:</span><b>X B</b></div></div>';
 }]);
 
 /* engine: one long scrolling page */
@@ -290,6 +351,15 @@ if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.fo
 else secs.forEach(s=>s.classList.add('in'));
 secs[0].classList.add('in');
 addEventListener('scroll',()=>{const h=document.documentElement;$('#pg').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100+'%'},{passive:true});
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
+ const cv=el('canvas');cv.id='cv';document.body.prepend(cv);const x=cv.getContext('2d');let W,H,n,d;
+ const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;n=Math.ceil(W/30);d=Array.from({length:n},()=>Math.random()*H/30)};rs();addEventListener('resize',rs);
+ const g=['0','1','0','1','0','1','the','tf','idf','log','bag'];
+ setInterval(()=>{x.fillStyle='rgba(7,5,26,.12)';x.fillRect(0,0,W,H);x.font='16px Consolas,monospace';
+  d.forEach((y,i)=>{x.fillStyle=i%3?'#4cc9f0':'#ffd166';x.fillText(g[Math.random()*g.length|0],i*30,y*30);d[i]=y*30>H&&Math.random()>.97?0:y+.5})},70);
+ const sp=el('div');sp.id='spot';document.body.append(sp);
+ addEventListener('pointermove',e=>{sp.style.transform=`translate(${e.clientX}px,${e.clientY}px)`},{passive:true});
+}
 })();
 </script>
 </body>
